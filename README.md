@@ -1,34 +1,19 @@
-# Svelte Typescript Chrome Extension Boilerplate
-
-> Boilerplate for Chrome Extension Svelte Typescript project
-
-## Features
-
--   [Svelte](https://svelte.dev/)
--   [TypeScript](https://www.typescriptlang.org/)
--   [Vite](https://vitejs.dev/)
--   [CRXJS Vite Plugin](https://github.com/crxjs/chrome-extension-tools/blob/main/packages/vite-plugin/README.md)
--   [Chrome Extensions Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/)
+# ClickClock Chrome Extension
+> Log hours on Clockify at the same time you change status on Clickup on a Chrome Extension
 
 ## Development
 
+## install dependencies
 ```bash
-# install dependencies
 npm i
-
-# build files to `/dist` directory
-# HMR for extension pages and content scripts
-npm run dev
 ```
 
 ## Build
-
 ```bash
-# build files to `/dist` directory
-$ npm run build
+npm run build
 ```
 
-## Load unpacked extensions
+## Load Unpacked Extensions
 
 [Getting Started Tutorial](https://developer.chrome.com/docs/extensions/mv3/getstarted/)
 
@@ -37,3 +22,7 @@ $ npm run build
 3. Click the `LOAD UNPACKED` button and select the `/dist` directory.
 
 ![Example](https://wd.imgix.net/image/BhuKGJaIeLNPW9ehns59NfwqKxF2/vOu7iPbaapkALed96rzN.png?auto=format&w=571)
+
+## Update Loaded Unpack Extension
+1. Build again
+2. Click on the Circular Reload Icon shown on the image above.
