@@ -1,49 +1,46 @@
 <script lang="ts">
-    import { storage } from "../storage";
-    import { onMount } from "svelte";
     import "../css/app.css";
+    import Toastify from 'toastify-js'
+    import 'toastify-js/src/toastify.css'
+    import CopyToClipboardIcon from './icons/CopyToClipboardIcon.svelte'
 
-    let count = 0;
-    let successMessage: string = null;
-
-    onMount(async () => {
-        const st = await storage.get()
-        count = st.count
-    });
-
-    function increment() {
-        count += 1;
+    function extractContentToCopy() {
+        const [taskContainer] = document.body.getElementsByClassName("task-container") as HTMLCollectionOf<Element>
+        if (taskContainer) {
+            const id = taskContainer.getAttribute("data-task-id")
+            const title = (taskContainer.querySelector("textarea.task-name") as HTMLTextAreaElement).value
+            return `CU-${id} - ${title}`
+        }
+        const rowsSelected = document.body.getElementsByClassName("cu-task-row_selected")
+        if (rowsSelected.length) {
+            const tasks = []
+            for (let row of rowsSelected) {
+                const id = row.getAttribute("data-id")
+                const title = row.querySelector("span.cu-task-row-main__link-text-inner").innerHTML
+                tasks.push(`CU-${id} - ${title}`)
+            }
+            return tasks.join("\n")
+        }
+        throw new Error("Could not extract content to copy 😢")
     }
 
-    function decrement() {
-        count -= 1;
+    function copyToClipboard(text: string) {
+        navigator.clipboard.writeText(text).then(() => Toastify({ text: 'Copied to clipboard 😘', duration: 2000, style: { background: 'MediumSeaGreen' } }).showToast())
     }
 
-    async function save() {
-        await storage.set({ count })
-        successMessage = "Options saved!";
-
-        setTimeout(() => {
-            successMessage = null;
-        }, 1500);
+    function handleCopy() {
+        try {
+            const contentToCopy = extractContentToCopy()
+            copyToClipboard(contentToCopy)
+        } catch (e) {
+            Toastify({ text: e.message, duration: 2000, style: { background: 'IndianRed' } }).showToast()
+        }
+        
     }
 </script>
 
-<div class="min-w-[250px]">
-    <p>Current count: <b>{count}</b></p>
-    <div>
-        <button class="btn" on:click={decrement}>-</button>
-        <button class="btn" on:click={increment}>+</button>
-        <button class="btn" on:click={save}>Save</button>
-        {#if successMessage}<span class="text-emerald-400 font-bold">{successMessage}</span>{/if}
-    </div>
+<div class="min-w-[250px] flex flex-row items-center">
+    <button class='flex relative items-center justify-center rounded-[10px] w-[32px] h-[32px] cursor-pointer mr-2 bg-deeppink' on:click|preventDefault={handleCopy}> 
+        <CopyToClipboardIcon class="m-[10px]" />
+    </button>
 </div>
-
-<style>
-    .btn {
-        @apply rounded border-none shadow-md text-white px-2 py-1 bg-emerald-400;
-    }
-    .btn:hover {
-      @apply bg-emerald-500;
-    }
-</style>
