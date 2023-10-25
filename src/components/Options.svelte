@@ -39,7 +39,7 @@
     }
 </script>
 
-<div class="min-w-[250px] flex flex-row items-center">
+<div class="flex flex-row items-center">
     <button class='flex relative items-center justify-center rounded-[10px] w-[32px] h-[32px] cursor-pointer mr-2 bg-deeppink' on:click|preventDefault={handleCopy}> 
         <CopyToClipboardIcon class="m-[10px]" />
     </button>
